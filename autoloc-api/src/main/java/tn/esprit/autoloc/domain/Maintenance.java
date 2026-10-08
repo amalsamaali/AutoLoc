@@ -22,9 +22,11 @@ public class Maintenance {
     @Column(nullable = false)
     private LocalDate dateDebut;
 
-    @Column
     private LocalDate dateFin;
 
-    @Column(length = 255)
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_vehicule", nullable = false)
+    private Vehicule vehicule;
 }
