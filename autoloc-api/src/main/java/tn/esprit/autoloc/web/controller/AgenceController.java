@@ -1,41 +1,40 @@
 package tn.esprit.autoloc.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.entity.Agence;
 import tn.esprit.autoloc.service.IAgenceService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/agences")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AgenceController {
     private final IAgenceService agenceService;
 
-    @PostMapping("/ajouter")
-    public Agence ajouterAgence(@RequestBody Agence agence) {
-        return agenceService.ajouterAgence(agence);
+    @PostMapping("/create")
+    public Agence create(@RequestBody Agence agence) {
+        return agenceService.create(agence);
     }
 
-    @DeleteMapping("/supprimer/{id}")
-    public void supprimerAgence(@PathVariable("id") long idAgence) {
-        agenceService.supprimerAgence(idAgence);
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        agenceService.deleteById(id);
     }
 
-    @GetMapping("/recuperer-tous")
-    public List<Agence> recupererAgences() {
-        return agenceService.recupererAgences();
+    @GetMapping("/find-all")
+    public List<Agence> findAll() {
+        return agenceService.findAll();
     }
 
-    @GetMapping("/trouver-tous")
-    public Set<Agence> findAgences() {
-        return agenceService.findAgences();
+    @GetMapping("/find-by-id/{id}")
+    public Agence findById(@PathVariable("id") Long id) {
+        return agenceService.findById(id);
     }
 
-    @GetMapping("/recuperer/{id}")
-    public Agence recupererAgenceById(@PathVariable("id") long idAgence) {
-        return agenceService.recupererAgenceById(idAgence);
+    @PutMapping("/update/{id}")
+    public Agence update(@PathVariable("id") Long id, @RequestBody Agence agence) {
+        return agenceService.update(id, agence);
     }
 }

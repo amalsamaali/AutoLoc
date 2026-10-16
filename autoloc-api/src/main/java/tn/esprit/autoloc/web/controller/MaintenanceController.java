@@ -1,41 +1,40 @@
 package tn.esprit.autoloc.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.entity.Maintenance;
 import tn.esprit.autoloc.service.IMaintenanceService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/maintenances")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MaintenanceController {
     private final IMaintenanceService maintenanceService;
 
-    @PostMapping("/ajouter")
-    public Maintenance ajouterMaintenance(@RequestBody Maintenance maintenance) {
-        return maintenanceService.ajouterMaintenance(maintenance);
+    @PostMapping("/create")
+    public Maintenance create(@RequestBody Maintenance maintenance) {
+        return maintenanceService.create(maintenance);
     }
 
-    @DeleteMapping("/supprimer/{id}")
-    public void supprimerMaintenance(@PathVariable("id") long idMaintenance) {
-        maintenanceService.supprimerMaintenance(idMaintenance);
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        maintenanceService.deleteById(id);
     }
 
-    @GetMapping("/recuperer-tous")
-    public List<Maintenance> recupererMaintenances() {
-        return maintenanceService.recupererMaintenances();
+    @GetMapping("/find-all")
+    public List<Maintenance> findAll() {
+        return maintenanceService.findAll();
     }
 
-    @GetMapping("/trouver-tous")
-    public Set<Maintenance> findMaintenances() {
-        return maintenanceService.findMaintenances();
+    @GetMapping("/find-by-id/{id}")
+    public Maintenance findById(@PathVariable("id") Long id) {
+        return maintenanceService.findById(id);
     }
 
-    @GetMapping("/recuperer/{id}")
-    public Maintenance recupererMaintenanceById(@PathVariable("id") long idMaintenance) {
-        return maintenanceService.recupererMaintenanceById(idMaintenance);
+    @PutMapping("/update/{id}")
+    public Maintenance update(@PathVariable("id") Long id, @RequestBody Maintenance maintenance) {
+        return maintenanceService.update(id, maintenance);
     }
 }

@@ -1,41 +1,40 @@
 package tn.esprit.autoloc.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.entity.Vehicule;
 import tn.esprit.autoloc.service.IVehiculeService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/vehicules")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VehiculeController {
     private final IVehiculeService vehiculeService;
 
-    @PostMapping("/ajouter")
-    public Vehicule ajouterVehicule(@RequestBody Vehicule vehicule) {
-        return vehiculeService.ajouterVehicule(vehicule);
+    @PostMapping("/create")
+    public Vehicule create(@RequestBody Vehicule vehicule) {
+        return vehiculeService.create(vehicule);
     }
 
-    @DeleteMapping("/supprimer/{id}")
-    public void supprimerVehicule(@PathVariable("id") long idVehicule) {
-        vehiculeService.supprimerVehicule(idVehicule);
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        vehiculeService.deleteById(id);
     }
 
-    @GetMapping("/recuperer-tous")
-    public List<Vehicule> recupererVehicules() {
-        return vehiculeService.recupererVehicules();
+    @GetMapping("/find-all")
+    public List<Vehicule> findAll() {
+        return vehiculeService.findAll();
     }
 
-    @GetMapping("/trouver-tous")
-    public Set<Vehicule> findVehicules() {
-        return vehiculeService.findVehicules();
+    @GetMapping("/find-by-id/{id}")
+    public Vehicule findById(@PathVariable("id") Long id) {
+        return vehiculeService.findById(id);
     }
 
-    @GetMapping("/recuperer/{id}")
-    public Vehicule recupererVehiculeById(@PathVariable("id") long idVehicule) {
-        return vehiculeService.recupererVehiculeById(idVehicule);
+    @PutMapping("/update/{id}")
+    public Vehicule update(@PathVariable("id") Long id, @RequestBody Vehicule vehicule) {
+        return vehiculeService.update(id, vehicule);
     }
 }

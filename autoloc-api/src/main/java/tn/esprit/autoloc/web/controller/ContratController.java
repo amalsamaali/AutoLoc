@@ -1,41 +1,40 @@
 package tn.esprit.autoloc.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.entity.Contrat;
 import tn.esprit.autoloc.service.IContratService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/contrats")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ContratController {
     private final IContratService contratService;
 
-    @PostMapping("/ajouter")
-    public Contrat ajouterContrat(@RequestBody Contrat contrat) {
-        return contratService.ajouterContrat(contrat);
+    @PostMapping("/create")
+    public Contrat create(@RequestBody Contrat contrat) {
+        return contratService.create(contrat);
     }
 
-    @DeleteMapping("/supprimer/{id}")
-    public void supprimerContrat(@PathVariable("id") long idContrat) {
-        contratService.supprimerContrat(idContrat);
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        contratService.deleteById(id);
     }
 
-    @GetMapping("/recuperer-tous")
-    public List<Contrat> recupererContrats() {
-        return contratService.recupererContrats();
+    @GetMapping("/find-all")
+    public List<Contrat> findAll() {
+        return contratService.findAll();
     }
 
-    @GetMapping("/trouver-tous")
-    public Set<Contrat> findContrats() {
-        return contratService.findContrats();
+    @GetMapping("/find-by-id/{id}")
+    public Contrat findById(@PathVariable("id") Long id) {
+        return contratService.findById(id);
     }
 
-    @GetMapping("/recuperer/{id}")
-    public Contrat recupererContratById(@PathVariable("id") long idContrat) {
-        return contratService.recupererContratById(idContrat);
+    @PutMapping("/update/{id}")
+    public Contrat update(@PathVariable("id") Long id, @RequestBody Contrat contrat) {
+        return contratService.update(id, contrat);
     }
 }

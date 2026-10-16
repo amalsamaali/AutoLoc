@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface IEmployeService {
-    Employe ajouterEmploye(Employe employe);
-    void supprimerEmploye(long idEmploye);
-    List<Employe> recupererEmployes();
-    Set<Employe> findEmployes();
-    Employe recupererEmployeById(long idEmploye);
+    Employe create(Employe entite);
+    Employe findById(Long id);
+    List<Employe> findAll();
+    Employe update(Long id, Employe entite);
+    void deleteById(Long id);
 }

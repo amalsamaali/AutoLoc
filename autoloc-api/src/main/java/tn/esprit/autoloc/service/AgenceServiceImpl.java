@@ -1,40 +1,57 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.entity.Agence;
 import tn.esprit.autoloc.repository.IAgenceRepository;
-import java.util.HashSet;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.util.List;
-import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AgenceServiceImpl implements IAgenceService {
     private final IAgenceRepository agenceRepository;
 
     @Override
-    public Agence ajouterAgence(Agence agence) {
-        return agenceRepository.save(agence);
+    public Agence create(Agence entite) {
+        if (entite.getIdAgence() != null) {
+            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        }
+        if (entite.getNom() == null || entite.getNom().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'agence est obligatoire");
+        }
+        return agenceRepository.save(entite);
     }
 
     @Override
-    public void supprimerAgence(long idAgence) {
-        agenceRepository.deleteById(idAgence);
+    public Agence findById(Long id) {
+        return agenceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agence", id));
     }
 
     @Override
-    public List<Agence> recupererAgences() {
+    public List<Agence> findAll() {
         return agenceRepository.findAll();
     }
 
     @Override
-    public Set<Agence> findAgences() {
-        return new HashSet<>(agenceRepository.findAll());
+    public Agence update(Long id, Agence entite) {
+        Agence existant = findById(id);
+        if (entite.getNom() == null || entite.getNom().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'agence est obligatoire");
+        }
+        existant.setNom(entite.getNom());
+        existant.setVille(entite.getVille());
+        existant.setAdresse(entite.getAdresse());
+        existant.setTelephone(entite.getTelephone());
+        return agenceRepository.save(existant);
     }
 
     @Override
-    public Agence recupererAgenceById(long idAgence) {
-        return agenceRepository.findById(idAgence).orElse(null);
+    public void deleteById(Long id) {
+        if (!agenceRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Agence", id);
+        }
+        agenceRepository.deleteById(id);
     }
 }

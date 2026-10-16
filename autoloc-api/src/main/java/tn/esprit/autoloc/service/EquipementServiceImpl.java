@@ -1,40 +1,55 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.entity.Equipement;
 import tn.esprit.autoloc.repository.IEquipementRepository;
-import java.util.HashSet;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.util.List;
-import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EquipementServiceImpl implements IEquipementService {
     private final IEquipementRepository equipementRepository;
 
     @Override
-    public Equipement ajouterEquipement(Equipement equipement) {
-        return equipementRepository.save(equipement);
+    public Equipement create(Equipement entite) {
+        if (entite.getIdEquipement() != null) {
+            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        }
+        if (entite.getLibelle() == null || entite.getLibelle().isEmpty()) {
+            throw new IllegalArgumentException("Le libellé de l'équipement est obligatoire");
+        }
+        return equipementRepository.save(entite);
     }
 
     @Override
-    public void supprimerEquipement(long idEquipement) {
-        equipementRepository.deleteById(idEquipement);
+    public Equipement findById(Long id) {
+        return equipementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Equipement", id));
     }
 
     @Override
-    public List<Equipement> recupererEquipements() {
+    public List<Equipement> findAll() {
         return equipementRepository.findAll();
     }
 
     @Override
-    public Set<Equipement> findEquipements() {
-        return new HashSet<>(equipementRepository.findAll());
+    public Equipement update(Long id, Equipement entite) {
+        Equipement existant = findById(id);
+        if (entite.getLibelle() == null || entite.getLibelle().isEmpty()) {
+            throw new IllegalArgumentException("Le libellé de l'équipement est obligatoire");
+        }
+        existant.setLibelle(entite.getLibelle());
+        existant.setVehicules(entite.getVehicules());
+        return equipementRepository.save(existant);
     }
 
     @Override
-    public Equipement recupererEquipementById(long idEquipement) {
-        return equipementRepository.findById(idEquipement).orElse(null);
+    public void deleteById(Long id) {
+        if (!equipementRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Equipement", id);
+        }
+        equipementRepository.deleteById(id);
     }
 }

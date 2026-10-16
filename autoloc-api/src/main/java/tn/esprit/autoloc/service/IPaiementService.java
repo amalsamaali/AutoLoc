@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface IPaiementService {
-    Paiement ajouterPaiement(Paiement paiement);
-    void supprimerPaiement(long idPaiement);
-    List<Paiement> recupererPaiements();
-    Set<Paiement> findPaiements();
-    Paiement recupererPaiementById(long idPaiement);
+    Paiement findById(Long id);
+    List<Paiement> findAll();
 }

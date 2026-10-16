@@ -1,40 +1,62 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.entity.Vehicule;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
-import java.util.HashSet;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VehiculeServiceImpl implements IVehiculeService {
     private final IVehiculeRepository vehiculeRepository;
 
     @Override
-    public Vehicule ajouterVehicule(Vehicule vehicule) {
-        return vehiculeRepository.save(vehicule);
+    public Vehicule create(Vehicule entite) {
+        if (entite.getIdVehicule() != null) {
+            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        }
+        if (entite.getTarifJournalier() != null && entite.getTarifJournalier().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Le tarif journalier ne peut pas être négatif");
+        }
+        return vehiculeRepository.save(entite);
     }
 
     @Override
-    public void supprimerVehicule(long idVehicule) {
-        vehiculeRepository.deleteById(idVehicule);
+    public Vehicule findById(Long id) {
+        return vehiculeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicule", id));
     }
 
     @Override
-    public List<Vehicule> recupererVehicules() {
+    public List<Vehicule> findAll() {
         return vehiculeRepository.findAll();
     }
 
     @Override
-    public Set<Vehicule> findVehicules() {
-        return new HashSet<>(vehiculeRepository.findAll());
+    public Vehicule update(Long id, Vehicule entite) {
+        Vehicule existant = findById(id);
+        if (entite.getTarifJournalier() != null && entite.getTarifJournalier().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Le tarif journalier ne peut pas être négatif");
+        }
+        existant.setImmatriculation(entite.getImmatriculation());
+        existant.setMarque(entite.getMarque());
+        existant.setModele(entite.getModele());
+        existant.setCategorie(entite.getCategorie());
+        existant.setTarifJournalier(entite.getTarifJournalier());
+        existant.setStatut(entite.getStatut());
+        existant.setAgence(entite.getAgence());
+        existant.setEquipements(entite.getEquipements());
+        return vehiculeRepository.save(existant);
     }
 
     @Override
-    public Vehicule recupererVehiculeById(long idVehicule) {
-        return vehiculeRepository.findById(idVehicule).orElse(null);
+    public void deleteById(Long id) {
+        if (!vehiculeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Vehicule", id);
+        }
+        vehiculeRepository.deleteById(id);
     }
 }

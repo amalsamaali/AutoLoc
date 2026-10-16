@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface IMaintenanceService {
-    Maintenance ajouterMaintenance(Maintenance maintenance);
-    void supprimerMaintenance(long idMaintenance);
-    List<Maintenance> recupererMaintenances();
-    Set<Maintenance> findMaintenances();
-    Maintenance recupererMaintenanceById(long idMaintenance);
+    Maintenance create(Maintenance entite);
+    Maintenance findById(Long id);
+    List<Maintenance> findAll();
+    Maintenance update(Long id, Maintenance entite);
+    void deleteById(Long id);
 }

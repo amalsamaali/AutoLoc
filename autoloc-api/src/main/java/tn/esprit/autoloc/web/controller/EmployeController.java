@@ -1,41 +1,40 @@
 package tn.esprit.autoloc.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.entity.Employe;
 import tn.esprit.autoloc.service.IEmployeService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/employes")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeController {
     private final IEmployeService employeService;
 
-    @PostMapping("/ajouter")
-    public Employe ajouterEmploye(@RequestBody Employe employe) {
-        return employeService.ajouterEmploye(employe);
+    @PostMapping("/create")
+    public Employe create(@RequestBody Employe employe) {
+        return employeService.create(employe);
     }
 
-    @DeleteMapping("/supprimer/{id}")
-    public void supprimerEmploye(@PathVariable("id") long idEmploye) {
-        employeService.supprimerEmploye(idEmploye);
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        employeService.deleteById(id);
     }
 
-    @GetMapping("/recuperer-tous")
-    public List<Employe> recupererEmployes() {
-        return employeService.recupererEmployes();
+    @GetMapping("/find-all")
+    public List<Employe> findAll() {
+        return employeService.findAll();
     }
 
-    @GetMapping("/trouver-tous")
-    public Set<Employe> findEmployes() {
-        return employeService.findEmployes();
+    @GetMapping("/find-by-id/{id}")
+    public Employe findById(@PathVariable("id") Long id) {
+        return employeService.findById(id);
     }
 
-    @GetMapping("/recuperer/{id}")
-    public Employe recupererEmployeById(@PathVariable("id") long idEmploye) {
-        return employeService.recupererEmployeById(idEmploye);
+    @PutMapping("/update/{id}")
+    public Employe update(@PathVariable("id") Long id, @RequestBody Employe employe) {
+        return employeService.update(id, employe);
     }
 }
