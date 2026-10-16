@@ -36,7 +36,7 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
-    public Client recupererClientByid(long idClient) {
+    public Client recupererClientById(long idClient) {
         return clientRepository.findById(idClient).orElse(null);
     }
 }

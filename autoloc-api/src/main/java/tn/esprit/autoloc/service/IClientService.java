@@ -15,5 +15,5 @@ public interface IClientService {
 
     Set<Client> findClients();
 
-    Client recupererClientByid(long idClient);
+    Client recupererClientById(long idClient);
 }
