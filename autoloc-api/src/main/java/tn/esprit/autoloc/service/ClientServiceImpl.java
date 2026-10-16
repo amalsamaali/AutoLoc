@@ -1,42 +1,61 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.entity.Client;
 import tn.esprit.autoloc.repository.IClientRepository;
 
-import java.util.HashSet;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.util.List;
-import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ClientServiceImpl implements IClientService {
 
     private final IClientRepository clientRepository;
 
     @Override
-    public Client ajouterClient(Client cl) {
-        return clientRepository.save(cl);
+    public Client create(Client entite) {
+        if (entite.getIdClient() != null) {
+            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        }
+        if (entite.getNom() == null || entite.getNom().isEmpty() || entite.getEmail() == null || entite.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("Le nom et l'email du client sont obligatoires");
+        }
+        return clientRepository.save(entite);
     }
 
     @Override
-    public void supprimerClient(long idClient) {
-        clientRepository.deleteById(idClient);
+    public Client findById(Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Client", id));
     }
 
     @Override
-    public List<Client> recupererClients() {
+    public List<Client> findAll() {
         return clientRepository.findAll();
     }
 
     @Override
-    public Set<Client> findClients() {
-        return new HashSet<>(clientRepository.findAll());
+    public Client update(Long id, Client entite) {
+        Client existant = findById(id);
+        if (entite.getNom() == null || entite.getNom().isEmpty() || entite.getEmail() == null || entite.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("Le nom et l'email du client sont obligatoires");
+        }
+        existant.setNom(entite.getNom());
+        existant.setPrenom(entite.getPrenom());
+        existant.setEmail(entite.getEmail());
+        existant.setTelephone(entite.getTelephone());
+        existant.setNumPermis(entite.getNumPermis());
+        existant.setDateInscription(entite.getDateInscription());
+        return clientRepository.save(existant);
     }
 
     @Override
-    public Client recupererClientById(long idClient) {
-        return clientRepository.findById(idClient).orElse(null);
+    public void deleteById(Long id) {
+        if (!clientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Client", id);
+        }
+        clientRepository.deleteById(id);
     }
 }

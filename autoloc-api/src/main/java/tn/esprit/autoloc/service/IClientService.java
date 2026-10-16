@@ -6,14 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface IClientService {
-
-    Client ajouterClient(Client cl);
-
-    void supprimerClient(long idClient);
-
-    List<Client> recupererClients();
-
-    Set<Client> findClients();
-
-    Client recupererClientById(long idClient);
+    Client create(Client entite);
+    Client findById(Long id);
+    List<Client> findAll();
+    Client update(Long id, Client entite);
+    void deleteById(Long id);
 }

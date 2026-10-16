@@ -1,40 +1,25 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.entity.Paiement;
 import tn.esprit.autoloc.repository.IPaiementRepository;
-import java.util.HashSet;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.util.List;
-import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PaiementServiceImpl implements IPaiementService {
     private final IPaiementRepository paiementRepository;
 
     @Override
-    public Paiement ajouterPaiement(Paiement paiement) {
-        return paiementRepository.save(paiement);
+    public Paiement findById(Long id) {
+        return paiementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paiement", id));
     }
 
     @Override
-    public void supprimerPaiement(long idPaiement) {
-        paiementRepository.deleteById(idPaiement);
-    }
-
-    @Override
-    public List<Paiement> recupererPaiements() {
+    public List<Paiement> findAll() {
         return paiementRepository.findAll();
-    }
-
-    @Override
-    public Set<Paiement> findPaiements() {
-        return new HashSet<>(paiementRepository.findAll());
-    }
-
-    @Override
-    public Paiement recupererPaiementById(long idPaiement) {
-        return paiementRepository.findById(idPaiement).orElse(null);
     }
 }

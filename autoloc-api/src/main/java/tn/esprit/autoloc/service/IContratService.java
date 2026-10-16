@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface IContratService {
-    Contrat ajouterContrat(Contrat contrat);
-    void supprimerContrat(long idContrat);
-    List<Contrat> recupererContrats();
-    Set<Contrat> findContrats();
-    Contrat recupererContratById(long idContrat);
+    Contrat create(Contrat entite);
+    Contrat findById(Long id);
+    List<Contrat> findAll();
+    Contrat update(Long id, Contrat entite);
+    void deleteById(Long id);
 }

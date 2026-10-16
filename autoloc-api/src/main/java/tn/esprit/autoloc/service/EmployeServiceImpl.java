@@ -1,40 +1,57 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.entity.Employe;
 import tn.esprit.autoloc.repository.IEmployeRepository;
-import java.util.HashSet;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.util.List;
-import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeServiceImpl implements IEmployeService {
     private final IEmployeRepository employeRepository;
 
     @Override
-    public Employe ajouterEmploye(Employe employe) {
-        return employeRepository.save(employe);
+    public Employe create(Employe entite) {
+        if (entite.getIdEmploye() != null) {
+            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        }
+        if (entite.getNom() == null || entite.getNom().isEmpty() || entite.getRole() == null) {
+            throw new IllegalArgumentException("Le nom et le poste de l'employé sont obligatoires");
+        }
+        return employeRepository.save(entite);
     }
 
     @Override
-    public void supprimerEmploye(long idEmploye) {
-        employeRepository.deleteById(idEmploye);
+    public Employe findById(Long id) {
+        return employeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employe", id));
     }
 
     @Override
-    public List<Employe> recupererEmployes() {
+    public List<Employe> findAll() {
         return employeRepository.findAll();
     }
 
     @Override
-    public Set<Employe> findEmployes() {
-        return new HashSet<>(employeRepository.findAll());
+    public Employe update(Long id, Employe entite) {
+        Employe existant = findById(id);
+        if (entite.getNom() == null || entite.getNom().isEmpty() || entite.getRole() == null) {
+            throw new IllegalArgumentException("Le nom et le poste de l'employé sont obligatoires");
+        }
+        existant.setNom(entite.getNom());
+        existant.setPrenom(entite.getPrenom());
+        existant.setRole(entite.getRole());
+        existant.setAgence(entite.getAgence());
+        return employeRepository.save(existant);
     }
 
     @Override
-    public Employe recupererEmployeById(long idEmploye) {
-        return employeRepository.findById(idEmploye).orElse(null);
+    public void deleteById(Long id) {
+        if (!employeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employe", id);
+        }
+        employeRepository.deleteById(id);
     }
 }

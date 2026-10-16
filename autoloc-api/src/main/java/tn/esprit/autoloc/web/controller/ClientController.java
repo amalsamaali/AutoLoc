@@ -1,41 +1,40 @@
 package tn.esprit.autoloc.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.entity.Client;
 import tn.esprit.autoloc.service.IClientService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/clients")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ClientController {
     private final IClientService clientService;
 
-    @PostMapping("/ajouter")
-    public Client ajouterClient(@RequestBody Client cl) {
-        return clientService.ajouterClient(cl);
+    @PostMapping("/create")
+    public Client create(@RequestBody Client cl) {
+        return clientService.create(cl);
     }
 
-    @DeleteMapping("/supprimer/{id}")
-    public void supprimerClient(@PathVariable("id") long idClient) {
-        clientService.supprimerClient(idClient);
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        clientService.deleteById(id);
     }
 
-    @GetMapping("/recuperer-tous")
-    public List<Client> recupererClients() {
-        return clientService.recupererClients();
+    @GetMapping("/find-all")
+    public List<Client> findAll() {
+        return clientService.findAll();
     }
 
-    @GetMapping("/trouver-tous")
-    public Set<Client> findClients() {
-        return clientService.findClients();
+    @GetMapping("/find-by-id/{id}")
+    public Client findById(@PathVariable("id") Long id) {
+        return clientService.findById(id);
     }
 
-    @GetMapping("/recuperer/{id}")
-    public Client recupererClientById(@PathVariable("id") long idClient) {
-        return clientService.recupererClientById(idClient);
+    @PutMapping("/update/{id}")
+    public Client update(@PathVariable("id") Long id, @RequestBody Client client) {
+        return clientService.update(id, client);
     }
 }

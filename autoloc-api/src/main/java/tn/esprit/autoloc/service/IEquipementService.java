@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface IEquipementService {
-    Equipement ajouterEquipement(Equipement equipement);
-    void supprimerEquipement(long idEquipement);
-    List<Equipement> recupererEquipements();
-    Set<Equipement> findEquipements();
-    Equipement recupererEquipementById(long idEquipement);
+    Equipement create(Equipement entite);
+    Equipement findById(Long id);
+    List<Equipement> findAll();
+    Equipement update(Long id, Equipement entite);
+    void deleteById(Long id);
 }

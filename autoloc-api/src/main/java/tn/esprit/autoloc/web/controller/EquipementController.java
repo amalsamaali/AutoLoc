@@ -1,41 +1,40 @@
 package tn.esprit.autoloc.web.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.entity.Equipement;
 import tn.esprit.autoloc.service.IEquipementService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/equipements")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EquipementController {
     private final IEquipementService equipementService;
 
-    @PostMapping("/ajouter")
-    public Equipement ajouterEquipement(@RequestBody Equipement equipement) {
-        return equipementService.ajouterEquipement(equipement);
+    @PostMapping("/create")
+    public Equipement create(@RequestBody Equipement equipement) {
+        return equipementService.create(equipement);
     }
 
-    @DeleteMapping("/supprimer/{id}")
-    public void supprimerEquipement(@PathVariable("id") long idEquipement) {
-        equipementService.supprimerEquipement(idEquipement);
+    @DeleteMapping("/delete/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        equipementService.deleteById(id);
     }
 
-    @GetMapping("/recuperer-tous")
-    public List<Equipement> recupererEquipements() {
-        return equipementService.recupererEquipements();
+    @GetMapping("/find-all")
+    public List<Equipement> findAll() {
+        return equipementService.findAll();
     }
 
-    @GetMapping("/trouver-tous")
-    public Set<Equipement> findEquipements() {
-        return equipementService.findEquipements();
+    @GetMapping("/find-by-id/{id}")
+    public Equipement findById(@PathVariable("id") Long id) {
+        return equipementService.findById(id);
     }
 
-    @GetMapping("/recuperer/{id}")
-    public Equipement recupererEquipementById(@PathVariable("id") long idEquipement) {
-        return equipementService.recupererEquipementById(idEquipement);
+    @PutMapping("/update/{id}")
+    public Equipement update(@PathVariable("id") Long id, @RequestBody Equipement equipement) {
+        return equipementService.update(id, equipement);
     }
 }
