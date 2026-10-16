@@ -1,4 +1,4 @@
-package tn.esprit.autoloc.domain;
+package tn.esprit.autoloc.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
