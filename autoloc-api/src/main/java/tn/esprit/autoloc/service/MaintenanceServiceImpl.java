@@ -14,9 +14,10 @@ public class MaintenanceServiceImpl implements IMaintenanceService {
 
     @Override
     public Maintenance create(Maintenance entite) {
-        if (entite.getIdMaintenance() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdMaintenance() != null && entite.getIdMaintenance() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
+        entite.setIdMaintenance(null);
         if (entite.getDateFin() != null && entite.getDateFin().isBefore(entite.getDateDebut())) {
             throw new IllegalArgumentException("La date de fin ne peut pas être antérieure à la date de début");
         }

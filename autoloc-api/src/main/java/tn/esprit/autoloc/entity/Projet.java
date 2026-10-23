@@ -18,6 +18,7 @@ public class Projet {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "id_entreprise")
     private Entreprise entreprise;
 
     @JsonIgnore

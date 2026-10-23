@@ -14,11 +14,12 @@ public class AgenceServiceImpl implements IAgenceService {
 
     @Override
     public Agence create(Agence entite) {
-        if (entite.getIdAgence() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdAgence() != null && entite.getIdAgence() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
-        if (entite.getNom() == null || entite.getNom().isEmpty()) {
-            throw new IllegalArgumentException("Le nom de l'agence est obligatoire");
+        entite.setIdAgence(null);
+        if (entite.getNom() == null || entite.getNom().isEmpty() || entite.getVille() == null || entite.getVille().isEmpty()) {
+            throw new IllegalArgumentException("Le nom et la ville de l'agence sont obligatoires");
         }
         return agenceRepository.save(entite);
     }
