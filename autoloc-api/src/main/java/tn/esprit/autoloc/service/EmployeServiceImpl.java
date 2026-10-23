@@ -14,11 +14,12 @@ public class EmployeServiceImpl implements IEmployeService {
 
     @Override
     public Employe create(Employe entite) {
-        if (entite.getIdEmploye() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdEmploye() != null && entite.getIdEmploye() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
+        entite.setIdEmploye(null);
         if (entite.getNom() == null || entite.getNom().isEmpty() || entite.getRole() == null) {
-            throw new IllegalArgumentException("Le nom et le poste de l'employé sont obligatoires");
+            throw new IllegalArgumentException("Le nom et le rôle de l'employé sont obligatoires");
         }
         return employeRepository.save(entite);
     }

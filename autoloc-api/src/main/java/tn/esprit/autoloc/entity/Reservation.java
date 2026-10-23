@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class Reservation {
     @JoinColumn(name = "id_vehicule", nullable = false)
     private Vehicule vehicule;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "reservation", fetch = FetchType.LAZY)
     private Contrat contrat;
 }

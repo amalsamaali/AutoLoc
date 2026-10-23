@@ -14,9 +14,10 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public Reservation create(Reservation entite) {
-        if (entite.getIdReservation() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdReservation() != null && entite.getIdReservation() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
+        entite.setIdReservation(null);
         if (entite.getDateFin() != null && entite.getDateFin().isBefore(entite.getDateDebut())) {
             throw new IllegalArgumentException("La date de fin ne peut pas être antérieure à la date de début");
         }

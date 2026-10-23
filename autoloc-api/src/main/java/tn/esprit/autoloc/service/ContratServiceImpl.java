@@ -15,9 +15,10 @@ public class ContratServiceImpl implements IContratService {
 
     @Override
     public Contrat create(Contrat entite) {
-        if (entite.getIdContrat() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdContrat() != null && entite.getIdContrat() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
+        entite.setIdContrat(null);
         if (entite.getMontantTotal() != null && entite.getMontantTotal().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Le montant total ne peut pas être négatif");
         }

@@ -15,9 +15,10 @@ public class VehiculeServiceImpl implements IVehiculeService {
 
     @Override
     public Vehicule create(Vehicule entite) {
-        if (entite.getIdVehicule() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdVehicule() != null && entite.getIdVehicule() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
+        entite.setIdVehicule(null);
         if (entite.getTarifJournalier() != null && entite.getTarifJournalier().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Le tarif journalier ne peut pas être négatif");
         }

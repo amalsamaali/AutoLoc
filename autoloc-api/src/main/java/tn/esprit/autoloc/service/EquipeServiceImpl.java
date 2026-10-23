@@ -19,6 +19,10 @@ public class EquipeServiceImpl implements IEquipeService {
 
     @Override
     public Equipe addEquipe(Equipe e) {
+        if (e.getIdEquipe() != null && e.getIdEquipe() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
+        }
+        e.setIdEquipe(null);
         return equipeRepository.save(e);
     }
 

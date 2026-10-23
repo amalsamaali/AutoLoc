@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,9 +55,11 @@ public class Vehicule {
             inverseJoinColumns = @JoinColumn(name = "id_equipement"))
     private Set<Equipement> equipements = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "vehicule", fetch = FetchType.LAZY)
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "vehicule", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "vehicule", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Maintenance> maintenances = new ArrayList<>();
 }

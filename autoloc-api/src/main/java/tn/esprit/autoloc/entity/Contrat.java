@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class Contrat {
     @JoinColumn(name = "id_reservation", nullable = false, unique = true)
     private Reservation reservation;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Paiement> paiements = new ArrayList<>();
 

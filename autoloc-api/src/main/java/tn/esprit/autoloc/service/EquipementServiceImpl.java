@@ -14,9 +14,10 @@ public class EquipementServiceImpl implements IEquipementService {
 
     @Override
     public Equipement create(Equipement entite) {
-        if (entite.getIdEquipement() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdEquipement() != null && entite.getIdEquipement() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
+        entite.setIdEquipement(null);
         if (entite.getLibelle() == null || entite.getLibelle().isEmpty()) {
             throw new IllegalArgumentException("Le libellé de l'équipement est obligatoire");
         }

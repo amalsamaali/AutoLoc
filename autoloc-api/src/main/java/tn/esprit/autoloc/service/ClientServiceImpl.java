@@ -16,9 +16,10 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public Client create(Client entite) {
-        if (entite.getIdClient() != null) {
-            throw new IllegalArgumentException("L'ID doit être null pour une création");
+        if (entite.getIdClient() != null && entite.getIdClient() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
         }
+        entite.setIdClient(null); // Force null pour laisser JPA générer l'ID
         if (entite.getNom() == null || entite.getNom().isEmpty() || entite.getEmail() == null || entite.getEmail().isEmpty()) {
             throw new IllegalArgumentException("Le nom et l'email du client sont obligatoires");
         }

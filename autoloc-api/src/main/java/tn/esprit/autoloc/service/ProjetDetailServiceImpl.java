@@ -19,6 +19,10 @@ public class ProjetDetailServiceImpl implements IProjetDetailService {
 
     @Override
     public ProjetDetail addProjetDetail(ProjetDetail pd) {
+        if (pd.getIdProjetDetail() != null && pd.getIdProjetDetail() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
+        }
+        pd.setIdProjetDetail(null);
         return projetDetailRepository.save(pd);
     }
 

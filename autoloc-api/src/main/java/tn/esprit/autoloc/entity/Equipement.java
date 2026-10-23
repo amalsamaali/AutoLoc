@@ -23,6 +23,7 @@ public class Equipement {
     @Column(nullable = false, length = 100)
     private String libelle;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
     private Set<Vehicule> vehicules = new HashSet<>();
 }

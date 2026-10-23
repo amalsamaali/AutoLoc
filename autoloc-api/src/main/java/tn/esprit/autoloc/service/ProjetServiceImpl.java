@@ -19,6 +19,10 @@ public class ProjetServiceImpl implements IProjetService {
 
     @Override
     public Projet addProjet(Projet p) {
+        if (p.getIdProjet() != null && p.getIdProjet() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
+        }
+        p.setIdProjet(null);
         return projetRepository.save(p);
     }
 

@@ -17,5 +17,6 @@ public class ProjetDetail {
     private LocalDate dateDebut;
 
     @OneToOne
+    @JoinColumn(name = "id_projet")
     private Projet projet;
 }

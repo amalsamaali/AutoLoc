@@ -19,6 +19,10 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
     @Override
     public Entreprise addEntreprise(Entreprise e) {
+        if (e.getIdEntreprise() != null && e.getIdEntreprise() != 0) {
+            throw new IllegalArgumentException("L'ID doit être null ou 0 pour une création");
+        }
+        e.setIdEntreprise(null);
         return entrepriseRepository.save(e);
     }
 
