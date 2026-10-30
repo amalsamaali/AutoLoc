@@ -2,6 +2,7 @@ package tn.esprit.autoloc.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.autoloc.entity.Agence;
 import tn.esprit.autoloc.entity.Employe;
 import tn.esprit.autoloc.repository.IAgenceRepository;
@@ -60,6 +61,7 @@ public class EmployeServiceImpl implements IEmployeService {
     }
 
     @Override
+    @Transactional
     public Employe desaffecterEmploye(Long idEmploye) {
         Employe employe = findById(idEmploye);
         employe.setAgence(null);
@@ -67,6 +69,7 @@ public class EmployeServiceImpl implements IEmployeService {
     }
 
     @Override
+    @Transactional
     public Employe affecterEmploye(Long idEmploye, Long idAgence) {
         Employe employe = findById(idEmploye);
         Agence agence = agenceRepository.findById(idAgence)

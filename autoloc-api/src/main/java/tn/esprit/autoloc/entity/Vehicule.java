@@ -44,11 +44,11 @@ public class Vehicule {
     @Column(nullable = false, length = 20)
     private StatutVehicule statut;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_agence")
     private Agence agence;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "vehicule_equipement",
             joinColumns = @JoinColumn(name = "id_vehicule"),
