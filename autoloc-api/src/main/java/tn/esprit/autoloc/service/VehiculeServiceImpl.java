@@ -2,7 +2,11 @@ package tn.esprit.autoloc.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.entity.Agence;
+import tn.esprit.autoloc.entity.Equipement;
 import tn.esprit.autoloc.entity.Vehicule;
+import tn.esprit.autoloc.repository.IAgenceRepository;
+import tn.esprit.autoloc.repository.IEquipementRepository;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.math.BigDecimal;
@@ -12,6 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VehiculeServiceImpl implements IVehiculeService {
     private final IVehiculeRepository vehiculeRepository;
+    private final IAgenceRepository agenceRepository;
+    private final IEquipementRepository equipementRepository;
 
     @Override
     public Vehicule create(Vehicule entite) {
@@ -59,5 +65,32 @@ public class VehiculeServiceImpl implements IVehiculeService {
             throw new ResourceNotFoundException("Vehicule", id);
         }
         vehiculeRepository.deleteById(id);
+    }
+
+    @Override
+    public Vehicule affecterVehicule(Long idVehicule, Long idAgence) {
+        Vehicule vehicule = findById(idVehicule);
+        Agence agence = agenceRepository.findById(idAgence)
+                .orElseThrow(() -> new ResourceNotFoundException("Agence", idAgence));
+        vehicule.setAgence(agence);
+        return vehiculeRepository.save(vehicule);
+    }
+
+    @Override
+    public Vehicule affecterEquipement(Long idVehicule, Long idEquipement) {
+        Vehicule vehicule = findById(idVehicule);
+        Equipement equipement = equipementRepository.findById(idEquipement)
+                .orElseThrow(() -> new ResourceNotFoundException("Equipement", idEquipement));
+        vehicule.getEquipements().add(equipement);
+        return vehiculeRepository.save(vehicule);
+    }
+
+    @Override
+    public Vehicule desaffecterEquipement(Long idVehicule, Long idEquipement) {
+        Vehicule vehicule = findById(idVehicule);
+        Equipement equipement = equipementRepository.findById(idEquipement)
+                .orElseThrow(() -> new ResourceNotFoundException("Equipement", idEquipement));
+        vehicule.getEquipements().remove(equipement);
+        return vehiculeRepository.save(vehicule);
     }
 }

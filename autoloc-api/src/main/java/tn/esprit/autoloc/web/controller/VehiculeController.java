@@ -45,4 +45,22 @@ public class VehiculeController {
     public Vehicule update(@PathVariable("id") Long id, @RequestBody Vehicule vehicule) {
         return vehiculeService.update(id, vehicule);
     }
+
+    @Operation(description = "affecter un véhicule à une agence")
+    @PutMapping("/affecter-agence/{idVehicule}/{idAgence}")
+    public Vehicule affecterVehicule(@PathVariable("idVehicule") Long idVehicule, @PathVariable("idAgence") Long idAgence) {
+        return vehiculeService.affecterVehicule(idVehicule, idAgence);
+    }
+
+    @Operation(description = "affecter un équipement à un véhicule")
+    @PutMapping("/affecter-equipement/{idVehicule}/{idEquipement}")
+    public Vehicule affecterEquipement(@PathVariable("idVehicule") Long idVehicule, @PathVariable("idEquipement") Long idEquipement) {
+        return vehiculeService.affecterEquipement(idVehicule, idEquipement);
+    }
+
+    @Operation(description = "désaffecter un équipement d'un véhicule")
+    @PutMapping("/desaffecter-equipement/{idVehicule}/{idEquipement}")
+    public Vehicule desaffecterEquipement(@PathVariable("idVehicule") Long idVehicule, @PathVariable("idEquipement") Long idEquipement) {
+        return vehiculeService.desaffecterEquipement(idVehicule, idEquipement);
+    }
 }
