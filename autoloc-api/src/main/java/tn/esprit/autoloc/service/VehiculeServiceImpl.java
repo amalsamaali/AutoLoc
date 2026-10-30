@@ -2,6 +2,7 @@ package tn.esprit.autoloc.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.autoloc.entity.Agence;
 import tn.esprit.autoloc.entity.Equipement;
 import tn.esprit.autoloc.entity.Vehicule;
@@ -68,6 +69,7 @@ public class VehiculeServiceImpl implements IVehiculeService {
     }
 
     @Override
+    @Transactional
     public Vehicule affecterVehicule(Long idVehicule, Long idAgence) {
         Vehicule vehicule = findById(idVehicule);
         Agence agence = agenceRepository.findById(idAgence)
@@ -77,6 +79,7 @@ public class VehiculeServiceImpl implements IVehiculeService {
     }
 
     @Override
+    @Transactional
     public Vehicule affecterEquipement(Long idVehicule, Long idEquipement) {
         Vehicule vehicule = findById(idVehicule);
         Equipement equipement = equipementRepository.findById(idEquipement)
@@ -86,11 +89,11 @@ public class VehiculeServiceImpl implements IVehiculeService {
     }
 
     @Override
+    @Transactional
     public Vehicule desaffecterEquipement(Long idVehicule, Long idEquipement) {
         Vehicule vehicule = findById(idVehicule);
-        Equipement equipement = equipementRepository.findById(idEquipement)
-                .orElseThrow(() -> new ResourceNotFoundException("Equipement", idEquipement));
-        vehicule.getEquipements().remove(equipement);
+        // Utilisation de removeIf avec equals pour comparer les IDs (plus robuste que remove(Object))
+        vehicule.getEquipements().removeIf(e -> e.getIdEquipement().equals(idEquipement));
         return vehiculeRepository.save(vehicule);
     }
 }
