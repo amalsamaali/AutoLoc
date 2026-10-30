@@ -45,4 +45,16 @@ public class EmployeController {
     public Employe update(@PathVariable("id") Long id, @RequestBody Employe employe) {
         return employeService.update(id, employe);
     }
+
+    @Operation(description = "désaffecter un employé de son agence")
+    @PutMapping("/desaffecter/{idEmploye}")
+    public Employe desaffecterEmploye(@PathVariable("idEmploye") Long idEmploye) {
+        return employeService.desaffecterEmploye(idEmploye);
+    }
+
+    @Operation(description = "affecter un employé à une agence")
+    @PutMapping("/affecter/{idEmploye}/{idAgence}")
+    public Employe affecterEmploye(@PathVariable("idEmploye") Long idEmploye, @PathVariable("idAgence") Long idAgence) {
+        return employeService.affecterEmploye(idEmploye, idAgence);
+    }
 }
