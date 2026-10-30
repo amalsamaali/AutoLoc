@@ -20,5 +20,3 @@ buildNumber.properties
 # Installateurs et gros binaires
 *.exe
 preuve-environnement.png
-
-.trae/
