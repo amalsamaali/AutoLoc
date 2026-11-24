@@ -3,7 +3,9 @@ package tn.esprit.autoloc.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.autoloc.dto.ReservationResponseDto;
 import tn.esprit.autoloc.entity.Reservation;
 import tn.esprit.autoloc.service.IReservationService;
 
@@ -11,10 +13,26 @@ import java.util.List;
 
 @Tag(name = "Gestion Reservation")
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping("/api/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
     private final IReservationService reservationService;
+
+
+    @Operation(description = "récupérer toutes les réservations (DTO plat)")
+    @GetMapping
+    public ResponseEntity<List<ReservationResponseDto>> getAllReservations() {
+        return ResponseEntity.ok(reservationService.getAllReservations());
+    }
+
+    @Operation(description = "récupérer les réservations d'un client (DTO plat)")
+    @GetMapping("/client/{idClient}")
+    public ResponseEntity<List<ReservationResponseDto>> getReservationsByClient(
+            @PathVariable("idClient") Long idClient) {
+        return ResponseEntity.ok(reservationService.getReservationsByClient(idClient));
+    }
+
+
 
     @Operation(description = "créer une réservation")
     @PostMapping("/create")

@@ -2,7 +2,10 @@ package tn.esprit.autoloc.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.dto.ClientRequestDto;
+import tn.esprit.autoloc.dto.ClientResponseDto;
 import tn.esprit.autoloc.entity.Client;
+import tn.esprit.autoloc.mapper.ClientMapper;
 import tn.esprit.autoloc.repository.IClientRepository;
 
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
@@ -13,6 +16,7 @@ import java.util.List;
 public class ClientServiceImpl implements IClientService {
 
     private final IClientRepository clientRepository;
+    private final ClientMapper clientMapper;
 
     @Override
     public Client create(Client entite) {
@@ -58,5 +62,19 @@ public class ClientServiceImpl implements IClientService {
             throw new ResourceNotFoundException("Client", id);
         }
         clientRepository.deleteById(id);
+    }
+
+    @Override
+    public ClientResponseDto ajouterClient(ClientRequestDto dto) {
+        Client client = clientMapper.toEntity(dto);
+        Client enregistre = clientRepository.save(client);
+        return clientMapper.toResponseDto(enregistre);
+    }
+
+    @Override
+    public ClientResponseDto getClientById(Long id) {
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Client", id));
+        return clientMapper.toResponseDto(client);
     }
 }

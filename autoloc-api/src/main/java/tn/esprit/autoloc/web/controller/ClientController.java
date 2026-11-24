@@ -2,8 +2,13 @@ package tn.esprit.autoloc.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.autoloc.dto.ClientRequestDto;
+import tn.esprit.autoloc.dto.ClientResponseDto;
 import tn.esprit.autoloc.entity.Client;
 import tn.esprit.autoloc.service.IClientService;
 
@@ -11,10 +16,31 @@ import java.util.List;
 
 @Tag(name = "Gestion Client")
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/api/clients")
 @RequiredArgsConstructor
 public class ClientController {
     private final IClientService clientService;
+
+    // ---------------------------------------------------------------------
+    // Endpoints exposes via DTO (le controller ne manipule QUE des DTO)
+    // ---------------------------------------------------------------------
+
+    @Operation(description = "créer un client à partir d'un DTO")
+    @PostMapping
+    public ResponseEntity<ClientResponseDto> ajouterClient(@Valid @RequestBody ClientRequestDto dto) {
+        ClientResponseDto cree = clientService.ajouterClient(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cree);
+    }
+
+    @Operation(description = "récupérer un client par son id (DTO)")
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientResponseDto> getClientById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(clientService.getClientById(id));
+    }
+
+    // ---------------------------------------------------------------------
+    // Endpoints existants (conservés, exposant l'entité)
+    // ---------------------------------------------------------------------
 
     @Operation(description = "créer un client")
     @PostMapping("/create")

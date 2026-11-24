@@ -2,7 +2,11 @@ package tn.esprit.autoloc.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tn.esprit.autoloc.dto.ReservationResponseDto;
 import tn.esprit.autoloc.entity.Reservation;
+import tn.esprit.autoloc.mapper.ReservationMapper;
+import tn.esprit.autoloc.repository.IClientRepository;
 import tn.esprit.autoloc.repository.IReservationRepository;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import java.util.List;
@@ -11,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements IReservationService {
     private final IReservationRepository reservationRepository;
+    private final IClientRepository clientRepository;
+    private final ReservationMapper reservationMapper;
 
     @Override
     public Reservation create(Reservation entite) {
@@ -55,5 +61,22 @@ public class ReservationServiceImpl implements IReservationService {
             throw new ResourceNotFoundException("Reservation", id);
         }
         reservationRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReservationResponseDto> getAllReservations() {
+        return reservationMapper.toResponseDtoList(reservationRepository.findAll());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReservationResponseDto> getReservationsByClient(Long idClient) {
+        // Le client doit exister, sinon 404
+        if (!clientRepository.existsById(idClient)) {
+            throw new ResourceNotFoundException("Client", idClient);
+        }
+        return reservationMapper.toResponseDtoList(
+                reservationRepository.findByClient_IdClient(idClient));
     }
 }

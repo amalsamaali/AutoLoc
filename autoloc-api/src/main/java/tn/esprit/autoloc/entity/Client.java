@@ -28,13 +28,16 @@ public class Client {
     @Column(nullable = false, length = 50)
     private String prenom;
 
-    @Column(nullable = false, unique = true, length = 100)
+    // Facultatif depuis l'exposition DTO (le ClientRequestDto ne l'impose pas)
+    @Column(unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    // Facultatif : non imposé par le ClientRequestDto
+    @Column(length = 20)
     private String telephone;
 
-    @Column(nullable = false, unique = true, length = 30)
+    // Facultatif : non porte par le ClientRequestDto
+    @Column(unique = true, length = 30)
     private String numPermis;
 
     @Column(nullable = false)
